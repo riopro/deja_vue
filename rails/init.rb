@@ -1,0 +1,1 @@
+require 'deja_vue'
