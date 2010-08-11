@@ -1,0 +1,9 @@
+Manifest
+README.rdoc
+Rakefile
+deja_vue.gemspec
+lib/deja_vue.rb
+lib/deja_vue/has_deja_vue.rb
+lib/deja_vue/history.rb
+lib/deja_vue/version.rb
+rails/init.rb

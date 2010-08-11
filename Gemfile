@@ -1,5 +1,7 @@
 source 'http://rubygems.org/'
 
+gem 'bundler', '0.9.26'
+
 # MongoDB
 gem 'mongo', '1.0.7'
 gem 'bson_ext', '1.0.4'
