@@ -88,14 +88,14 @@ class History
 
   def next_version
     History.where(:created_at.gte => self.created_at,  # could have the same creation date, as long it's not the same object
-                      :id.ne => self.id.to_s,         # ne => not equal to
+                      :id.ne => self.id,              # ne => not equal to
                       :versionable_type => self.versionable_type,
                       :versionable_id => self.versionable_id).sort(:created_at.asc).first
   end
 
   def previous_version
     History.where(:created_at.lte => self.created_at,  # could have the same creation date, as long it's not the same object
-                      :id.ne => self.id.to_s,         # ne => not equal to
+                      :id.ne => self.id,              # ne => not equal to
                       :versionable_type => self.versionable_type,
                       :versionable_id => self.versionable_id).sort(:created_at.desc).first
   end

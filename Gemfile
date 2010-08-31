@@ -1,14 +1,11 @@
 source 'http://rubygems.org/'
 
-gem 'bundler', '0.9.26'
-
+gem 'rails',   '2.3.8'
 # MongoDB
-gem 'mongo', '1.0.7'
-gem 'bson_ext', '1.0.4'
-gem 'mongo_mapper', '0.8.2'
-
-group :test do
-  gem 'rspec', '1.3.0'
-  gem 'rack-test', '0.5.4'
-end
-
+gem 'mongo', '1.0.8'
+gem 'bson_ext', '1.0.7'
+gem 'mongo_mapper', '0.8.4'
+gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'rspec', '1.3.0'
+gem 'jeweler'
+gem 'rcov'
