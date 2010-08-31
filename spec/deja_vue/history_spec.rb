@@ -213,53 +213,6 @@ describe History do
   end
 end
 
-
-# A mock class simulating an ActiveRecord class that is going to be versionated
-class MyTest < Struct.new(:id, :name, :my_test_association_id, :created_at, :updated_at)
-  
-  def version_changes
-    # mocked method that simply returns that name field has changed
-    [:name]
-  end
-
-  def tag_list
-    @tag_list
-  end
-
-  def tag_list=(value)
-    @tag_list = value
-  end
-
-  def my_test_association
-    # Simulated Association
-    @my_test_association
-  end
-
-  def my_test_association=(object)
-    @my_test_association = object
-  end
-
-  def attributes
-    {
-      'id' => self.id,
-      'name' => self.name,
-      'my_test_association_id' => self.my_test_association_id,
-      'updated_at' => Date.current.to_s,
-      'created_at' => Date.current.to_s
-    }
-  end
-end
-
-class MyTestAssociation < Struct.new(:id, :name)
-
-  def attributes
-    {
-      'id' => self.id,
-      'name' => self.name
-    }
-  end
-end
-
 # Fake Authlogic behavior. Search in a session (FakeAuthLogicSession instance) for an user (FakeUser)
 class FakeAuthLogicSession
   def self.find
