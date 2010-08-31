@@ -17,6 +17,19 @@ rescue Bundler::GemNotFound
 end
 
 Bundler.require
+require 'active_record'
+require 'active_support'
+require 'action_controller'
+
+mongo_yml =  File.expand_path('../mongodb.yml', __FILE__)
+
+if File.exists?(mongo_yml)
+  MongoMapper.config = YAML.load_file(mongo_yml)
+  MongoMapper.connect('test')
+else
+  raise "Please create #{mongodb_yml} first to configure your database. Take a look at: #{mongodb_yml}.sample"
+end
+
 require File.expand_path('../../lib/deja_vue', __FILE__)
 
 unless [].respond_to?(:freq)
@@ -32,6 +45,7 @@ end
 ENV['DB'] ||= 'sqlite3'
 
 database_yml = File.expand_path('../database.yml', __FILE__)
+
 if File.exists?(database_yml)
   active_record_configuration = YAML.load_file(database_yml)[ENV['DB']]
   

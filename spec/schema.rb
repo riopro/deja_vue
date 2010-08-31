@@ -4,9 +4,9 @@ ActiveRecord::Schema.define :version => 0 do
   end
 
   create_table "products", :force => true do |t|
-    t.string "title",
-    t.string "description",
-    t.integer "supplier_id",
+    t.string "title"
+    t.string "description"
+    t.integer "supplier_id"
   end
   
 end

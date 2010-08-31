@@ -1,1 +1,4 @@
 *.gem
+mongodb.yml
+*.sqlite3
+*.log

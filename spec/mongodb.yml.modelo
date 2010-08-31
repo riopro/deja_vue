@@ -1,0 +1,10 @@
+development:
+  host: 127.0.0.1
+  port: 27017
+  database: deja_vue_test
+
+test:
+  host: 127.0.0.1
+  port: 27017
+  database: deja_vue_test
+
