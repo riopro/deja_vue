@@ -3,6 +3,9 @@ require 'spec_helper'
 describe History do
   before(:each) do
     History.delete_all # FIXME: it has no fixtures, so we need to delete manually
+    Account.destroy_all
+    User.destroy_all
+
     @valid_attributes = {
       :versionable_type => 'Test',
       :versionable_id => 1,
@@ -39,7 +42,7 @@ describe History do
                     :extra_info_fields => [:tag_list]
                   }
         account = Account.create(:name => 'teste')
-        @user = User.new :login => "my_myself", :account => account
+        @user = User.new :login => "me_myself", :account => account
         @user.tag_list = "obla, di, tags"
       end
       it "should return false if there is no object to versionate" do
@@ -173,19 +176,19 @@ describe History do
         @history.version.should be_nil
       end
       it "should recreate object versionated" do
-        @history.create_version(@user, 'create', @options)
+        @history.create_version(@user, 'create', @options).should be_true
         @history = History.first :order => "created_at desc"
         @history.version.class.is_a?(User)
-        @history.version.name.should == @user.name
+        @history.version.login.should == @user.login
       end
       it "should recreate object associations" do
 	@history.create_version(@user, 'create', @options).should be_true
         @history = History.first :order => "created_at desc"
-        @history.version.account.is_a?(Account)
-        @history.version.account.should == account
+        @history.version.account.is_a?(Account).should be_true
+        @history.version.account.should == Account.first
       end
       it "should restore extra info" do
-        @history.create_version(@user, 'create', @options)
+        @history.create_version(@user, 'create', @options).should be_true
         @history = History.first :order => "created_at desc"
         @history.version.tag_list.should == @user.tag_list
       end
@@ -193,6 +196,8 @@ describe History do
 
     describe "next_version" do
       it "should return next version by creation date" do
+	@user.stub(:version_changes).and_return([:login])
+        @user.save
         @history.create_version(@user, 'create', @options)
         @user.login = "it's another one"
         @new_history = History.new
@@ -206,6 +211,8 @@ describe History do
 
     describe "previous version" do
       it "should return previous version by creation date" do
+	@user.stub(:version_changes).and_return([:login])
+        @user.save
         @history.create_version(@user, 'create', @options)
         @user.login = "it's another one"
         @new_history = History.new
@@ -229,6 +236,12 @@ class FakeAuthLogicSession
     u = User.new
     u.id = 10
     u
+  end
+end
+
+class FakeUser < Struct.new(:id)
+  def initialize
+    self.id = 10
   end
 end
 
