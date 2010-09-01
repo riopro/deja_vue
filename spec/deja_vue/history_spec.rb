@@ -35,12 +35,12 @@ describe History do
       before(:each) do
         @options = {
                     :ignore => [:depreciated_value, :last_exported_on, :locked_by_job],
-                    :associations => [:my_test_association],
+                    :associations => [:account],
                     :extra_info_fields => [:tag_list]
                   }
-        @user = MyTest.new 1, "obladi oblada", 2
+        account = Account.create(:name => 'teste')
+        @user = User.new :login => "my_myself", :account => account
         @user.tag_list = "obla, di, tags"
-        @user.my_test_association= MyTestAssociation.new(2, 'teste')
       end
       it "should return false if there is no object to versionate" do
         History.versionate(nil, 'update', @options).should be_false
@@ -59,7 +59,7 @@ describe History do
     before(:each) do
       @options = {
                   :ignore => [],
-                  :associations => [:my_test_association],
+                  :associations => [:account],
                   :extra_info_fields => [:tag_list]
                 }
       account = Account.create(:name => 'teste')
@@ -72,9 +72,9 @@ describe History do
         @history.version_attributes.is_a?(Hash).should be_true
         @history.version_attributes.sort.should == @user.attributes.sort
       end
-      it "should record object association my_test_association" do
+      it "should record object association account" do
         @history.create_version(@user, 'update', @options)
-        @history.version_associations.should == { 'my_test_association' => @user.my_test_association.attributes }
+        @history.version_associations.should == { 'account' => @user.account.attributes }
       end
       it "should record extra info" do
         @history.create_version(@user, 'update', @options)
@@ -175,8 +175,8 @@ describe History do
       it "should recreate object associations" do
         @history.create_version(@user, 'create', @options)
         @history = History.first :order => "created_at desc"
-        @history.version.my_test_association.is_a?(MyTestAssociation)
-        @history.version.my_test_association.should == MyTestAssociation.new(2, 'teste')
+        @history.version.account.is_a?(MyTestAssociation)
+        @history.version.account.should == MyTestAssociation.new(2, 'teste')
       end
       it "should restore extra info" do
         @history.create_version(@user, 'create', @options)
