@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = %q{DejaVue -> Ruby versioning Gem using MongoDB as backend}
   s.email = %q{riopro@riopro.com.br}
   s.extra_rdoc_files = ["README.rdoc", "lib/deja_vue.rb"]
-  s.files = ["Manifest", "README.rdoc", "Rakefile", "deja_vue.gemspec", "lib/deja_vue.rb", "lib/deja_vue/has_deja_vue.rb", "lib/deja_vue/history.rb"]
+  s.files = ["Manifest", "README.rdoc", "Rakefile", "deja_vue.gemspec", "lib/deja_vue.rb", "lib/deja_vue/has_deja_vue.rb", "lib/deja_vue/history.rb", "rails/init.rb"]
   s.homepage = %q{http://github.com/riopro/deja_vue}
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "deja_vue", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
