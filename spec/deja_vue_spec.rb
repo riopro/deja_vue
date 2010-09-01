@@ -34,6 +34,10 @@ describe TestsController do
 			@tests_controller.current_user= nil
 			@tests_controller.test_user_for_deja_vue.should == nil
 		end	
+		it "should return a string if current user is a string" do
+			@tests_controller.current_user= "user"
+			@tests_controller.test_user_for_deja_vue.should == "user"
+		end
 	end
 
   describe "set_deja_vue_user" do
@@ -56,13 +60,29 @@ describe TestsController do
 end
 
 describe DejaVue do
- 	it "should allow an user to be set temporarly" do
-		Thread.current[:who_did_it].should be_nil
-		temp_user = nil
-		DejaVue.setting_user_as('arroba') do
-			temp_user = Thread.current[:who_did_it]
+	describe "self.who_did_it" do
+		it "should return Thread current user" do
+			DejaVue.who_did_it.should_not == 'testing'
+			Thread.current[:who_did_it] = 'testing'
+			DejaVue.who_did_it.should == 'testing'
 		end
-		temp_user.should == 'arroba'
-		Thread.current[:who_did_it].should be_nil
+	end
+	describe "self.who_did_it=(user)" do
+		it "should set Thread current user" do
+			Thread.current[:who_did_it].should be_nil
+			DejaVue.who_did_it = 'test'
+			Thread.current[:who_did_it].should == 'test'
+		end
+	end
+	describe "self.setting_user_as(user)" do
+	 	it "should allow an user to be set temporarly" do
+			Thread.current[:who_did_it].should be_nil
+			temp_user = nil
+			DejaVue.setting_user_as('arroba') do
+				temp_user = Thread.current[:who_did_it]
+			end
+			temp_user.should == 'arroba'
+			Thread.current[:who_did_it].should be_nil
+		end
 	end
 end
