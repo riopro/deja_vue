@@ -51,4 +51,22 @@ describe DejaVue::InstanceMethods do
 			@product.histories(:versionable_id => 'blablabla')[0].versionable_id.should == @product.id.to_s
 		end
 	end
+	describe ".history(id)" do
+		it "should raise an error for non bson object" do
+			@product.save!
+			lambda{
+				@product.history('blablabla')
+			}.should raise_error(BSON::InvalidObjectId)
+		end
+		it "should return nil for a non existent id" do
+			@product.save!
+			@product.history(BSON::ObjectId.new).should be_nil
+		end
+		
+		it "should return a History for an existent id" do
+			@product.save!
+			@history = @product.histories.first
+			@product.history(@history.id).should == @history
+		end
+	end
 end
