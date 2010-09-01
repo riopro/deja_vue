@@ -83,9 +83,12 @@ module DejaVue
     # Override this method in your controller to call a different
     # method, e.g. `current_person`, or anything you like.
     def user_for_deja_vue
-      current_user.id
-    rescue
-      nil
+			begin
+				current_user if current_user && current_user.is_a?(String)
+				current_user[:id] if current_user && current_user[:id]
+			rescue
+				nil
+			end
     end
 
   private
