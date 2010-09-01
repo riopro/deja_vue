@@ -64,7 +64,7 @@ else
 end
 
 def clean_database!
-  models = [Product, Supplier]
+  models = [Product, Supplier, User, Account]
   models.each do |model|
     ActiveRecord::Base.connection.execute "DELETE FROM #{model.table_name}"
   end

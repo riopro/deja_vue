@@ -5,8 +5,7 @@ describe History do
   # erases all data in databases
   def clear_dbs
     History.delete_all
-    Account.destroy_all
-    User.destroy_all
+    clean_database!
   end
 
   before(:each) do
