@@ -36,5 +36,19 @@ describe DejaVue::InstanceMethods do
 			@supplier.should be_new_record
 			@supplier.histories.should be_empty
 		end
+		it "should store all changes" do
+			@product.histories.size.should == 0
+			@product.save!
+			@product.histories.size.should == 1
+			@product.title = "TTT Prod"
+			@product.save!
+			@product.histories.size.should == 2
+		end
+		it "should not let class or id to be changed" do
+			@product.save!
+			@product.histories(:versionable_type => 'Test').size.should == 1
+			@product.histories(:versionable_type => 'Test')[0].versionable_type.should == 'Product'
+			@product.histories(:versionable_id => 'blablabla')[0].versionable_id.should == @product.id.to_s
+		end
 	end
 end
