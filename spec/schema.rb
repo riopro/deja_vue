@@ -7,6 +7,7 @@ ActiveRecord::Schema.define :version => 0 do
     t.string "title"
     t.string "description"
     t.integer "supplier_id"
+    t.string "dimensions"
   end
   
   create_table 'users', :force => true do |t|

@@ -1,6 +1,5 @@
 class Product < ActiveRecord::Base
-  has_deja_vue :associations => [:supplier]
-
+  has_deja_vue :associations => [:supplier], :ignore => [:dimensions]
   belongs_to :supplier
 end
 
