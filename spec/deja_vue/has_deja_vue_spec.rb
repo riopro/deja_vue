@@ -29,6 +29,34 @@ describe DejaVue::InstanceMethods do
 			end
 		end
 	end
+	describe "versionate_as" do
+		it "should versionate objetc creation" do
+			@product.save!
+			@product.histories(:kind_of_version => 'create').size.should == 1
+			@supplier.save!
+			@supplier.histories(:kind_of_version => 'create').size.should == 1
+		end
+		it "should versionate object update" do
+			@product.save!
+			@product.title = "TTTPROD"
+			@product.save!
+			@product.histories.size.should == 2
+			@product.histories(:kind_of_version => 'update').size.should == 1
+			@supplier.save!
+			@supplier.name = "ahahahah"
+  		@supplier.save!		
+			@supplier.histories(:kind_of_version => 'update').size.should == 1
+		end
+		it "should versionate object destruction" do
+			@product.save!
+			@product.destroy
+			@product.histories.size.should == 2
+			@product.histories(:kind_of_version => 'destroy').size.should == 1
+			@supplier.save!
+			@supplier.destroy
+			@supplier.histories(:kind_of_version => 'destroy').size.should == 1	
+		end
+	end
 	describe "histories(extra_options={})" do
 		it "should return an empty array for new record" do
 			@product.should be_new_record
