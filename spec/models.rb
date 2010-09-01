@@ -19,7 +19,13 @@ class User < ActiveRecord::Base
     [:name]
   end
 
-  attr_accessible :tag_list
+  def tag_list
+    @tag_list
+  end
+
+  def tag_list=(args)
+    @tag_list = args
+  end
 
 end
 
