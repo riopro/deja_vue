@@ -25,10 +25,12 @@ module DejaVue
 
     end
 
+		# FIXME: not implemented yet
     def deja_vue_off
       self.deja_vue_active = false
     end
 
+		# FIXME: not implemented yet
     def deja_vue_on
       self.deja_vue_active = true
     end

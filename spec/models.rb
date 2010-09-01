@@ -4,6 +4,7 @@ class Product < ActiveRecord::Base
 end
 
 class Supplier < ActiveRecord::Base
+	has_deja_vue
   has_many :products
 end
 
