@@ -38,7 +38,9 @@ module DejaVue
 
   module InstanceMethods
 
-    # return array with changed fields
+    # return array with changed fields after object has been saved
+		# (created or updated). 
+		# Whe need this to validate if the changes must be recorded after save
     def version_changes
       @version_changes
     end
