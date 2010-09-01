@@ -70,4 +70,11 @@ def clean_database!
   end
 end
 
+# erases all data in databases
+def clear_dbs
+  History.delete_all
+  clean_database!
+end
+
+
 clean_database!

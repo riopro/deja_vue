@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 describe History do
-
-  # erases all data in databases
-  def clear_dbs
-    History.delete_all
-    clean_database!
-  end
-
   before(:each) do
     clear_dbs
 
