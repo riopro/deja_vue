@@ -17,12 +17,11 @@ DejaVue have _create_ version == model_version_when_creating
 == Installing
 
   $ bundle install
-  $ rake manifest
-  $ rake build_gemspec
-  $ rake gem
-  $ gem install pkg/deja_vue-*.gem
+	$ gem install gemcutter
+  $ gem build deja_vue.gemspec
+  $ gem install ./deja_vue-*.gem
 
-== Add to your model
+== Beggining with DejaVue: Add to your model
 
 Add a single line and your model will start beeing versionated:
 
@@ -30,7 +29,14 @@ def SomeModel < ActiveRecord::Base
  has_deja_vue
 end
 
-== Options
+Or, for example, use the ignore option:
+
+def SomeModel < ActiveRecord::Base
+ has_deja_vue :ignore => :location
+end
+
+
+== More Options
 
  You might pass some options, including:
  :ignore                 | An Array of fields that will be ignored. If
