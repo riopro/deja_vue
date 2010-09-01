@@ -1,10 +1,16 @@
 require 'spec_helper'
 
 describe History do
-  before(:each) do
-    History.delete_all # FIXME: it has no fixtures, so we need to delete manually
+
+  # erases all data in databases
+  def clear_dbs
+    History.delete_all
     Account.destroy_all
     User.destroy_all
+  end
+
+  before(:each) do
+    clear_dbs
 
     @valid_attributes = {
       :versionable_type => 'Test',
@@ -54,6 +60,11 @@ describe History do
         History.stub(:new).and_return(@history)
         @history.should_receive(:create_version).and_return(true)
         History.versionate(@user, 'update', @options).should be_true
+      end
+    end
+    describe "human_name" do
+      it "should return History" do
+        History.human_name("").should == "History"
       end
     end
   end

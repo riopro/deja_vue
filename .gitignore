@@ -2,3 +2,4 @@
 mongodb.yml
 *.sqlite3
 *.log
+coverage/*
