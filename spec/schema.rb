@@ -9,12 +9,12 @@ ActiveRecord::Schema.define :version => 0 do
     t.integer "supplier_id"
   end
   
-  create_table 'my_tests', :force => true do |t|
+  create_table 'users', :force => true do |t|
     t.string 'name'
-    t.integer 'my_test_association_id'
+    t.integer 'account_id'
   end
 
-  create_table 'my_test_associations', :force => true do |t|
+  create_table 'accounts', :force => true do |t|
     t.string 'name'
   end
 

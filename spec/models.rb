@@ -10,9 +10,9 @@ end
 
 
 # A mock class simulating an ActiveRecord class that is going to be versionated
-class MyTest < ActiveRecord::Base
+class User < ActiveRecord::Base
   
-  belongs_to :my_test_association
+  belongs_to :account
 
   def version_changes
     # mocked method that simply returns that name field has changed
@@ -23,6 +23,6 @@ class MyTest < ActiveRecord::Base
 
 end
 
-class MyTestAssociation < ActiveRecord::Base
-
+class Account < ActiveRecord::Base
+  has_many :users
 end

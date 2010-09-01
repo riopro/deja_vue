@@ -62,9 +62,9 @@ describe History do
                   :associations => [:my_test_association],
                   :extra_info_fields => [:tag_list]
                 }
-      @my_test = MyTest.new 1, "obladi oblada", 2
+      account = Account.create(:name => 'teste')
+      @my_test = User.new :login => "my_myself", :account => account
       @my_test.tag_list = "obla, di, tags"
-      @my_test.my_test_association= MyTestAssociation.new(2, 'teste')
     end
     describe "create_version(object, kind_of_version, options={})" do
       it "should record object attributes" do
@@ -220,12 +220,9 @@ class FakeAuthLogicSession
   end
 
   def user
-    FakeUser.new
+    u = User.new
+    u.id = 10
+    u
   end
 end
 
-class FakeUser < Struct.new(:id)
-  def initialize
-    self.id = 10
-  end
-end
