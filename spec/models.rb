@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
   def version_changes
     # mocked method that simply returns that name field has changed
-    [:name]
+    [:login]
   end
 
   def tag_list

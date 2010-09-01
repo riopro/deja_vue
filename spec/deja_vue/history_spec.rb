@@ -34,7 +34,7 @@ describe History do
     describe "self.versionate(object, kind_of_version, options={})" do
       before(:each) do
         @options = {
-                    :ignore => [:depreciated_value, :last_exported_on, :locked_by_job],
+                    :ignore => [:city, :country],
                     :associations => [:account],
                     :extra_info_fields => [:tag_list]
                   }
@@ -63,7 +63,7 @@ describe History do
                   :extra_info_fields => [:tag_list]
                 }
       account = Account.create(:name => 'teste')
-      @user = User.new :login => "my_myself", :account => account
+      @user = User.new :login => "me_myself", :account => account
       @user.tag_list = "obla, di, tags"
     end
     describe "create_version(object, kind_of_version, options={})" do
@@ -92,7 +92,7 @@ describe History do
       end
       it "should store changed_fields" do
         @history.create_version(@user, 'update', @options)
-        @history.changed_fields.should == [:name]
+        @history.changed_fields.should == [:login]
       end
       it "should not store changed_fields on destroy" do
         @history.create_version(@user, 'destroy', @options)
@@ -119,13 +119,13 @@ describe History do
         end
       end
       it "should not save if all changed fields are ignored ones" do
-        @history.create_version(@user, 'update', @options.merge(:ignore => [:name]))
+        @history.create_version(@user, 'update', @options.merge(:ignore => [:login]))
         @history.should be_new_record
-        @history.create_version(@user, 'create', @options.merge(:ignore => [:name]))
+        @history.create_version(@user, 'create', @options.merge(:ignore => [:login]))
         @history.should be_new_record
       end
       it "should ask for a version_changes method in the object to be versionated" do
-        @user.should_receive(:version_changes).twice.and_return([:name])
+        @user.should_receive(:version_changes).twice.and_return([:login])
         @history.create_version(@user, 'update', @options)
       end
     end
@@ -140,7 +140,7 @@ describe History do
         @history.has_changed?(@user).should be_false
       end
       it "should return true if it has changed_fields" do
-        @history.should_receive(:store_changed_fields).and_return([:name])
+        @history.should_receive(:store_changed_fields).and_return([:login])
         @history.has_changed?(@user).should be_true
       end
       it "should set changed_fields with object's changed fields" do
@@ -156,27 +156,33 @@ describe History do
         @history.ignored_fields.should == History::DEFAULT_IGNORED_FIELDS
       end
       it "should add ignored fields to the default ones" do
-        @history.ignored_fields=[:name]
-        @history.ignored_fields.should == History::DEFAULT_IGNORED_FIELDS + [:name]
-        @history.ignored_fields.should_not == [:name]
+        @history.ignored_fields=[:login]
+        @history.ignored_fields.should == History::DEFAULT_IGNORED_FIELDS + [:login]
+        @history.ignored_fields.should_not == [:login]
       end
     end
 
     describe "version" do
+      before(:each) do
+        @user.save
+      end
+      it "should not have user as a new record" do
+        @user.should_not be_new_record
+      end
       it "should return nil for non saved records" do
         @history.version.should be_nil
       end
       it "should recreate object versionated" do
         @history.create_version(@user, 'create', @options)
         @history = History.first :order => "created_at desc"
-        @history.version.class.is_a?(MyTest)
+        @history.version.class.is_a?(User)
         @history.version.name.should == @user.name
       end
       it "should recreate object associations" do
-        @history.create_version(@user, 'create', @options)
+	@history.create_version(@user, 'create', @options).should be_true
         @history = History.first :order => "created_at desc"
-        @history.version.account.is_a?(MyTestAssociation)
-        @history.version.account.should == MyTestAssociation.new(2, 'teste')
+        @history.version.account.is_a?(Account)
+        @history.version.account.should == account
       end
       it "should restore extra info" do
         @history.create_version(@user, 'create', @options)
@@ -188,7 +194,7 @@ describe History do
     describe "next_version" do
       it "should return next version by creation date" do
         @history.create_version(@user, 'create', @options)
-        @user.name = "it's another one"
+        @user.login = "it's another one"
         @new_history = History.new
         @new_history.create_version(@user, 'update', @options)
         History.count.should == 2
@@ -201,7 +207,7 @@ describe History do
     describe "previous version" do
       it "should return previous version by creation date" do
         @history.create_version(@user, 'create', @options)
-        @user.name = "it's another one"
+        @user.login = "it's another one"
         @new_history = History.new
         @new_history.create_version(@user, 'update', @options)
         History.all.size.should == 2
