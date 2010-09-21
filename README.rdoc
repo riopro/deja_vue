@@ -19,10 +19,7 @@ The main goal of DejaVue is to keep track of associated models. It's
 useful for a model whose relations change among time and to see how
 it really looked like at a certain point.
 
-There are 3 kinds of versioning: create, update, destroy
-Differently from PaperTrail, each version will record the current model info.
-So PapelTrail _create_ versions have reify == nil
-DejaVue have _create_ version == model_version_when_creating
+As in PaperTrail, there are 3 kinds of versions: create, update and destroy
 
 == Installing
 
@@ -99,9 +96,10 @@ and then rollback to previous user.
 
 == Important info regarding DejaVue behaviour
 
-There are 3 kinds of versioning: create, update, destroy
 Differently from PaperTrail, each version will record the current model info.
-So PapelTrail _create_ versions have reify == nil
+
+So PapelTrail _create_ version have reify == nil
+
 DejaVue have _create_ version == model_data_while_creating
 
 == Reporting Bugs
@@ -111,6 +109,7 @@ http://github.com/riopro/deja_vue/issues
 == Authors
 
 Otávio Sampaio (osampaio at riopro dot com dot br)
+
 Rodrigo Oliveira (roliveira at riopro dot com dot br)
 
 
