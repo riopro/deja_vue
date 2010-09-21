@@ -1,7 +1,17 @@
 = DejaVue
 
-Yet another gem to store version of your models. But it uses mongodb as 
-backend. Based on PaperTrail (http://github.com/airblade/paper_trail/).
+Yet another gem to store versions of your model's data, but using MongoDB 
+as backend. Based on PaperTrail (http://github.com/airblade/paper_trail/).
+
+It also allows you to versionate associated models (by now, only 
+one-to-one associations).
+
+== Dependencies
+
+It depend on mongo and mongo_mapper gems. Your MongoDB connection
+might already have been created.
+
+As it uses a NoSQL db, you don't need migrations to start using it.
 
 == Why choose DejaVue
 
@@ -25,16 +35,30 @@ DejaVue have _create_ version == model_version_when_creating
 
 Add a single line and your model will start beeing versionated:
 
-def SomeModel < ActiveRecord::Base
- has_deja_vue
-end
+ def SomeModel < ActiveRecord::Base
+  has_deja_vue
+ end
 
 Or, for example, use the ignore option:
 
-def SomeModel < ActiveRecord::Base
- has_deja_vue :ignore => :location
-end
+ def SomeModel < ActiveRecord::Base
+  has_deja_vue :ignore => :location
+ end
 
+== Configuring user dynamically
+
+Sometimes you might need to set the user that is changing the 
+model data dynamically, eg. while processing background jobs.
+
+In such case, you can set user using:
+
+ DejaVue.setting_user_as('admin') do
+  @post.title = 'new title'
+  @post.save
+ end
+
+This way you will set who_did_it as 'admin', create a new history version
+and then rollback to previous user.
 
 == More Options
 
@@ -72,4 +96,21 @@ end
                          | before save the model that will be versionated, using:
                          | DejaVue.who_did_it = 'otavio'
                          | SomeModel.save
+
+== Important info regarding DejaVue behaviour
+
+There are 3 kinds of versioning: create, update, destroy
+Differently from PaperTrail, each version will record the current model info.
+So PapelTrail _create_ versions have reify == nil
+DejaVue have _create_ version == model_data_while_creating
+
+== Reporting Bugs
+
+http://github.com/riopro/deja_vue/issues
+
+== Authors
+
+Otávio Sampaio (osampaio at riopro dot com dot br)
+Rodrigo Oliveira (roliveira at riopro dot com dot br)
+
 
